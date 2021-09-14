@@ -114,7 +114,7 @@ public class Controller implements IController{
 	
 	
 	@Override
-	public boolean onInsertTFButtonPressed(/*@ non_null @*/ String category, /*@ non_null @*/ String question, boolean correctAnserwer, /*@ non_null @*/ String caption) {
+	public boolean onInsertTFButtonPressed(/*@ non_null @*/ String category, /*@ non_null @*/ String question, boolean correctAnserwer, /*@ non_null @*/ String caption){
 		if (category == null && question == null && caption == null) {
 			throw new IllegalArgumentException("Alcuni input sono nulli");
 		}
@@ -123,18 +123,29 @@ public class Controller implements IController{
 			view.displayInfoErrorMessages("Hai inserito alcuni parametri vuoti");
 			return false;
 		}
-		if (!model_tf.hasKeyWords()) {
-			return false;
-		}else {
-			if (model_tf.hasWrongLines()) {
-				view.displayInfoErrorMessages("Attenzione: alcune linee sono scorrette, verranno rimosse");
-				boolean removed = model_tf.removeWrongLines();
-				assert removed : "Non sono state rimosse le righe anche se ci sono";
-				view.displayInfoErrorMessages("Sono state rimosse le righe sbagliate");
+		try {
+			if (!model_tf.hasKeyWords()) {
+				return false;
+			}else {
+				if (model_tf.hasWrongLines()) {
+					view.displayInfoErrorMessages("Attenzione: alcune linee sono scorrette, verranno rimosse");
+					boolean removed = model_tf.removeWrongLines();
+					assert removed : "Non sono state rimosse le righe anche se ci sono";
+					view.displayInfoErrorMessages("Sono state rimosse le righe sbagliate");
+				}
 			}
+		}catch (IOException e) {
+			view.displayInfoErrorMessages(GENERAL_ERROR_MESSAGE);
+			return false;
 		}
 		IAnswers a = new AnswerTF(category, question, correctAnserwer, caption);
-		boolean inserted = model_tf.insertAnswer(a);
+		boolean inserted;
+		try {
+			inserted = model_tf.insertAnswer(a);
+		} catch (IOException e) {
+			view.displayInfoErrorMessages(GENERAL_ERROR_MESSAGE);
+			return false;
+		}
 		return inserted;
 	}
 
