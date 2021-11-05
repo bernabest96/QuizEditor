@@ -20,7 +20,8 @@ public class CustomQueue<T> implements ICustomQueue<T>{
 		assert max_capacity > 0;
 		this.max_capacity = max_capacity;
 	}
-	
+
+	//@ also ensures queue.size() == \old(queue.size()) + 1;
 	@Override
 	public boolean enqueue(/*@ non_null @*/ T e) {
 		if (e == null) {
@@ -50,23 +51,24 @@ public class CustomQueue<T> implements ICustomQueue<T>{
 		assert queue.size() == 0;
 	}
 	//Ricontrolla
-	//also ensures \result != null;
+	//@ also ensures \result != null;
 	@Override
 	@SuppressWarnings("unchecked")
 	public T[] getArray() {
 		return (T[]) queue.toArray();
 	}
 	
-	//also ensures \result == (\sum int i; 0<=i && i<queue.size(); queue.get(i).toString() + "\n");
+	// also ensures \result == (\sum int i; 0<=i && i<queue.size(); queue.get(i).toString() + "\n");
 	@Override
 	public String toString() {
 		String str = "";
 		for (T t : queue) {
-			str += t.toString() + "\n";
+			str += t.toString() + System.lineSeparator();
 		}
 		return str;
 	}
 	
+	//@ also ensures \result <==> o != null && o instanceof CustomQueue;
 	@Override
 	public boolean equals(Object o) {
 		if (o == null)	return false;

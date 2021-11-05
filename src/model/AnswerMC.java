@@ -53,6 +53,10 @@ public class AnswerMC implements IMCAnswers {
 		this.caption = caption;
 	}
 	
+	@Override
+	public String getCategory() {
+		return category;
+	}
 	
 	@Override
 	public String getQuestion() {
@@ -88,7 +92,7 @@ public class AnswerMC implements IMCAnswers {
 		}
 		boolean notOk = true;
 		for (String ANS : ANSWERS_TYPE) {
-			notOk = notOk && !correctAnswer.equals(ANS);
+			notOk = notOk && !answer.equals(ANS);
 		}
 		if (notOk) {
 			throw new IllegalArgumentException("La stringa di input non corrisponde ad A, B, C o D");
@@ -120,7 +124,7 @@ public class AnswerMC implements IMCAnswers {
 	@Override
 	public String toString() {
 		return "\"" + category + "\",\"" + question + "\",\"" + A + "\",\"" + B + "\",\"" + 
-				C + "\",\"" + D + "\",\"" + correctAnswer + "\",\"" + question + "\"";
+				C + "\",\"" + D + "\",\"" + correctAnswer + "\",\"" + caption + "\"";
 	}
 	
 	/*@ also ensures \result <==> (o != null && !(o instanceof AnswerMC) && 

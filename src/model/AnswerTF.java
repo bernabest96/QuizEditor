@@ -47,7 +47,7 @@ public class AnswerTF implements ITFAnswers {
 		return caption;
 	}
 	
-	//@ ensures \result != null && !(\result.isEmpty());
+	//@ also ensures \result != null && !(\result.isEmpty());
 	@Override
 	public String toString() {
 		String tfStr = correctAnswer? "t" : "f";
@@ -65,5 +65,10 @@ public class AnswerTF implements ITFAnswers {
 		}
 		AnswerTF a = (AnswerTF) o;
 		return category.equals(a.category) && question.equals(a.question);
+	}
+
+	@Override
+	public String getCategory() {
+		return category;
 	}
 }

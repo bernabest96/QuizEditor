@@ -94,6 +94,8 @@ public class View extends JFrame implements IView, ActionListener{
 	JTextArea displayQuiz;
 	JScrollPane scrollQuiz;
 	JButton searchButton;
+	private JFileChooser fcMc;
+	private JFileChooser fcTf;
 	
 	/*------------*/
 	/**********************************************************/
@@ -453,6 +455,8 @@ public class View extends JFrame implements IView, ActionListener{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
+		fcMc = new JFileChooser();
+		fcTf = new JFileChooser();
 	}
 
 	//@ also ensures \result.length == 2;
@@ -460,6 +464,38 @@ public class View extends JFrame implements IView, ActionListener{
 	public String[] getSelectedAnswer() {
 		String[] files = new String[] {currentMCFilePath, currentTFFilePath};
 		return files;
+	}
+
+	public JRadioButton getInsertRB() {
+		return insertRB;
+	}
+
+	public JRadioButton getSearchRB() {
+		return searchRB;
+	}
+
+	public JRadioButton getMcRB() {
+		return mcRB;
+	}
+
+	public JRadioButton getTfRB() {
+		return tfRB;
+	}
+
+	public JRadioButton getARadioButton() {
+		return ARadioButton;
+	}
+
+	public JRadioButton getBRadioButton() {
+		return BRadioButton;
+	}
+
+	public JRadioButton getCRadioButton() {
+		return CRadioButton;
+	}
+
+	public JRadioButton getDRadioButton() {
+		return DRadioButton;
 	}
 
 	//@ also ensures this.controller != null;
@@ -471,24 +507,25 @@ public class View extends JFrame implements IView, ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//difensivo
+		if (controller == null)	return;
+		
 		Object obj = e.getSource();
 		
 		//menu search MC
 		if (obj == searchMc) {
-			JFileChooser fc=new JFileChooser();    
-		    int i=fc.showOpenDialog(this);    
+			int i=fcMc.showOpenDialog(this);    
 		    if(i==JFileChooser.APPROVE_OPTION){    
-		        File f=fc.getSelectedFile();    
+		        File f=fcMc.getSelectedFile();    
 		        currentMCFilePath = f.getPath();
 		        controller.onChangeMCFilePath(currentMCFilePath);
 		    }
 		}
 		//menu search TF
 		if (obj == searchTf) {
-			JFileChooser fc=new JFileChooser();    
-		    int i=fc.showOpenDialog(this);    
-		    if(i==JFileChooser.APPROVE_OPTION){    
-		        File f=fc.getSelectedFile();    
+			int i=fcTf.showOpenDialog(this);    
+		    if(i==JFileChooser.APPROVE_OPTION){
+		        File f=fcTf.getSelectedFile();    
 		        currentTFFilePath = f.getPath();
 		        controller.onChangeTFFilePath(currentTFFilePath);
 		    }
@@ -605,6 +642,14 @@ public class View extends JFrame implements IView, ActionListener{
 				
 	}
 
+	public JFileChooser getFcMc() {
+		return fcMc;
+	}
+
+	public JFileChooser getFcTf() {
+		return fcTf;
+	}
+
 	//@ also ensures \result != null;
 	@Override
 	public String getCategory() {
@@ -617,7 +662,7 @@ public class View extends JFrame implements IView, ActionListener{
 		if (message == null) {
 			throw new IllegalArgumentException("Valore nullo");
 		}
-		infoErrorMessages.enqueue(message + "\n");
+		infoErrorMessages.enqueue(message);
 		displayError.setText(infoErrorMessages.toString());
 	}
 
@@ -627,8 +672,180 @@ public class View extends JFrame implements IView, ActionListener{
 		if (message == null) {
 			throw new IllegalArgumentException("Valore nullo");
 		}
-		quizMessages.enqueue(message + "\n");
+		quizMessages.enqueue(message);
 		displayQuiz.setText(quizMessages.toString());
+	}
+
+	/************FOR TESTING ONLY****************/
+	public JMenuItem getSearchMc() {
+		return searchMc;
+	}
+
+	public JMenuItem getSearchTf() {
+		return searchTf;
+	}
+	public IController getController() {
+		return controller;
+	}
+
+	public String getCurrentMCFilePath() {
+		return currentMCFilePath;
+	}
+
+	public String getCurrentTFFilePath() {
+		return currentTFFilePath;
+	}
+
+	public CustomQueue<String> getQuizMessages() {
+		return quizMessages;
+	}
+
+	public CustomQueue<String> getInfoErrorMessages() {
+		return infoErrorMessages;
+	}
+
+	public JMenuBar getBar() {
+		return bar;
+	}
+
+	public JMenu getMenu() {
+		return menu;
+	}
+
+	public JPanel getInsertOrSearchPanel() {
+		return insertOrSearchPanel;
+	}
+
+	public JPanel getContentPanel() {
+		return contentPanel;
+	}
+
+	public JPanel getErrorPanel() {
+		return errorPanel;
+	}
+
+	public JPanel getMenuPanel() {
+		return menuPanel;
+	}
+
+	public JPanel getMcPanel() {
+		return mcPanel;
+	}
+
+	public JTextField getCategoryMCField() {
+		return categoryMCField;
+	}
+
+	public JTextArea getQuestionMCField() {
+		return questionMCField;
+	}
+
+	public JTextField getAField() {
+		return AField;
+	}
+
+	public JTextField getBField() {
+		return BField;
+	}
+
+	public JTextField getCField() {
+		return CField;
+	}
+
+	public JTextField getDField() {
+		return DField;
+	}
+
+	public JTextArea getCaptionMCField() {
+		return captionMCField;
+	}
+
+	public JButton getInsertMCButton() {
+		return insertMCButton;
+	}
+
+	public JButton getInsertTFButton() {
+		return insertTFButton;
+	}
+
+	public JTextField getCategoryTFField() {
+		return categoryTFField;
+	}
+
+	public JPanel getTfPanel() {
+		return tfPanel;
+	}
+
+	public JTextArea getQuestionTFField() {
+		return questionTFField;
+	}
+
+	public JRadioButton getTrueRB() {
+		return trueRB;
+	}
+
+	public JRadioButton getFalseRB() {
+		return falseRB;
+	}
+
+	public JLabel getTrueLabel() {
+		return trueLabel;
+	}
+
+	public JLabel getFalseLabel() {
+		return falseLabel;
+	}
+
+	public JTextArea getCaptionTFField() {
+		return captionTFField;
+	}
+
+	public JTextArea getDisplayError() {
+		return displayError;
+	}
+
+	public JScrollPane getScrollError() {
+		return scrollError;
+	}
+
+	public CardLayout getMctfCard() {
+		return mctfCard;
+	}
+
+	public CardLayout getContentCard() {
+		return contentCard;
+	}
+
+	public JPanel getSearchPanel() {
+		return searchPanel;
+	}
+
+	public JPanel getInsertPanel() {
+		return insertPanel;
+	}
+
+	public JRadioButton getMcS() {
+		return mcS;
+	}
+
+	public JRadioButton getTfS() {
+		return tfS;
+	}
+
+	public JTextField getCategoryText() {
+		return categoryText;
+	}
+
+	public JTextArea getDisplayQuiz() {
+		return displayQuiz;
+	}
+
+	public JScrollPane getScrollQuiz() {
+		return scrollQuiz;
+	}
+
+	public JButton getSearchButton() {
+		return searchButton;
 	}
 
 }

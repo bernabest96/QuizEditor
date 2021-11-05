@@ -33,24 +33,24 @@ public interface IModel {
 	 */
 	public boolean isWellFormed() throws FileNotFoundException, IOException;
 	/**
-	 * Inserisci il quiz nel file
+	 * Inserisci il quiz nel file corrente
 	 * @param a quiz da inserire
-	 * @return true se inserisci, false altrimenti
+	 * @return true se inserisci, false se IAnswer è quello corretto.
 	 * @throws IOException 
 	 */
 	public boolean insertAnswer(IAnswers a) throws IOException;
 	/**
 	 * 
 	 * @param category Stringa di ricerca della categoria (se vuota ricerca tutto, altrimenti solo la categoria specificata)
-	 * @return Ritorna la lista di quiz IAnswers trovate
-	 * @throws FileNotFoundException
+	 * @return Ritorna la lista di quiz IAnswers trovate, null se non trova nulla.
+	 * @throws FileNotFoundException se il file non esiste
 	 * @throws IOException
 	 */
 	public IAnswers[] readAnswers(String category) throws FileNotFoundException, IOException;
 	/**
 	 * Rimuove le righe che non seguono il formato 
 	 * @return true se rimosse, false altrimenti
-	 * @throws IOException 
+	 * @throws IOException problemi generali I/O
 	 */
 	public boolean removeWrongLines() throws FileNotFoundException, IOException;
 }
