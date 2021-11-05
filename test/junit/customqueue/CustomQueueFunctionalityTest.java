@@ -46,14 +46,14 @@ public class CustomQueueFunctionalityTest {
 	public static Collection<Object[]> data() {
         Object[][] data = new Object[][] { 
         	{ new String[]{}, new String[]{}, 1, "", false},
-        	{ new String[]{"s1"}, new String[]{"s1"}, 1, "s1\n", true},
-        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s3"}, 1, "s3\n", true}, 
-        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s1", "s2", "s3"}, 5, "s1\ns2\ns3\n", false}, 
-        	{ new String[]{"s1", "s2", "s3", "s4", "s5"}, new String[]{"s1", "s2", "s3", "s4", "s5"}, 5 , "s1\ns2\ns3\ns4\ns5\n", true}, 
-        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, new String[]{"s3", "s4", "s5", "s6", "s7"}, 5 , "s3\ns4\ns5\ns6\ns7\n", true},
-        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s1", "s2", "s3"}, 7, "s1\ns2\ns3\n", false},
-        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, 7, "s1\ns2\ns3\ns4\ns5\ns6\ns7\n", true},
-        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"}, new String[]{"s2", "s3", "s4", "s5", "s6", "s7", "s8"}, 7, "s2\ns3\ns4\ns5\ns6\ns7\ns8\n", false}
+        	{ new String[]{"s1"}, new String[]{"s1"}, 1, "s1\r\n", true},
+        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s3"}, 1, "s3\r\n", true}, 
+        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s1", "s2", "s3"}, 5, "s1\r\ns2\r\ns3\r\n", false}, 
+        	{ new String[]{"s1", "s2", "s3", "s4", "s5"}, new String[]{"s1", "s2", "s3", "s4", "s5"}, 5 , "s1\r\ns2\r\ns3\r\ns4\r\ns5\r\n", true}, 
+        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, new String[]{"s3", "s4", "s5", "s6", "s7"}, 5 , "s3\r\ns4\r\ns5\r\ns6\r\ns7\r\n", true},
+        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s1", "s2", "s3"}, 7, "s1\r\ns2\r\ns3\r\n", false},
+        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, 7, "s1\r\ns2\r\ns3\r\ns4\r\ns5\r\ns6\r\ns7\r\n", true},
+        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"}, new String[]{"s2", "s3", "s4", "s5", "s6", "s7", "s8"}, 7, "s2\r\ns3\r\ns4\r\ns5\r\ns6\r\ns7\r\ns8\r\n", false}
         	};
         return Arrays.asList(data);
     }
