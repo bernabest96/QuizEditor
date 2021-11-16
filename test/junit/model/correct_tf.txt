@@ -1,0 +1,8 @@
+"TF"
+"category","question","answer","caption"
+"category_a","question01","f","this is cap"
+"category_b","question02","t","this is cap"
+"category_c","question03","t","this is cap"
+"category_a","question04","f","this is cap"
+"category_a","question05","t","this is cap"
+"category_c","question06","t","this is cap"

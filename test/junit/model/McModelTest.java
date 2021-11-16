@@ -169,6 +169,12 @@ public class McModelTest {
 		assertFalse(m.isWellFormed());
 	}
 	
+	//readAnswers
+	@Test(expected = IllegalArgumentException.class)
+	public void readAnswersNull() throws FileNotFoundException, IOException {
+		m.readAnswers(null);
+	}
+	
 	@Test
 	public void readAnswers01() throws IOException {
 		AnswerMC[] ans = new AnswerMC[6];
@@ -206,6 +212,12 @@ public class McModelTest {
 	@Test
 	public void readAnswer02() throws FileNotFoundException, IOException {
 		assertNull(m.readAnswers(""));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void removeWrongLinesIllegalArg() throws IOException {
+		m.setFile(FILEPATH_NOT_CORRECT);
+		m.removeWrongLines();
 	}
 	
 	//mi rimuove i problemi
@@ -256,6 +268,29 @@ public class McModelTest {
 		assertTrue(m.isWellFormed());
 		assertFalse(m.removeWrongLines());
 		assertArrayEquals(ans, m.readAnswers(""));
+	}
+	
+	@Test
+	public void hasWrongLinesConditionTest() throws IOException {
+		AnswerMC[] ans = new AnswerMC[4];
+		ans[0] = new AnswerMC("category_a", "question01", "A", "B", "C", "D", "A", "this is cap");
+		ans[1] = new AnswerMC("category_b", "question02", "A", "B", "C", "D", "B", "this is cap");
+		ans[2] = new AnswerMC("category_c", "question03", "A", "B", "C", "D", "C", "this is cap");
+		ans[3] = new AnswerMC("category_a", "question03", "A", "B", "C", "D", "D", "this is cap");
+		assertTrue(m.insertAnswer(ans[0]));
+		assertTrue(m.insertAnswer(ans[1]));
+		assertTrue(m.insertAnswer(ans[2]));
+		assertTrue(m.insertAnswer(ans[3]));		
+		assertTrue(!m.hasWrongLines());
+		assertTrue(m.isWellFormed());
+		//inserisci uno con 7 strighe corrette ma con risposta sbagliata
+		//append string to file
+		FileWriter fw = new FileWriter(FILEPATH_CORRECT, true);
+		fw.write("\"category_a\",\"question01\",\"A\",\"B\",\"C\",\"D\",\"RispostaCorretta!\",\"this is cap\"" + System.lineSeparator());
+		fw.close();
+		///////////
+		assertTrue(m.hasWrongLines());
+		assertTrue(!m.isWellFormed());
 	}
 	
 }
