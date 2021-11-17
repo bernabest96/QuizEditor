@@ -1,4 +1,5 @@
 import model.McModel;
+import model.Model;
 import model.TfModel;
 import view.IView;
 import view.View;
@@ -15,7 +16,7 @@ public class Main {
 	public static void main(String[] args) {
 		IView v;
 		McModel model_mc;
-		TfModel model_tf;
+		Model model_tf;
 		try {
 			model_mc = new McModel(FILEPATH_MC_DEFAULT);
 			model_tf = new TfModel(FILEPATH_TF_DEFAULT);

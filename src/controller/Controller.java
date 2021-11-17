@@ -17,29 +17,31 @@ import model.IAnswers;
 import model.IMCAnswers;
 import model.IModel;
 import model.McModel;
-import model.TfModel;
+import model.Model;
 
 public class Controller implements IController{
 
+	private static final String INSERTED_QUIZ = "Hai inserito il quiz correttamente!";
+	private static final String CANNOT_REMOVE_LINES = "Impossibile rimuovere il contenuto sbagliato; Riprovare";
 	private static final String JUST_INSERTED_MESSAGE = "Hai appena inserto questo quiz!!";
 	private static final String NO_FOUND_MESSAGE = "Nessun risultato trovato";
 	private static final String SEARCH_ABORT_MESSAGE = "Search abort";
 	private static final String REMOVED_LINES_MESSAGE = "Sono state rimosse le righe sbagliate";
 	private static final String WRONG_LINES_MESSAGE = "Attenzione: alcune linee sono scorrette, verranno rimosse";
-	private static final String WRONG_FORMAT_MESSAGE = "Attenzione: Il formato del file non è corretto, controllare le magic words";
+	private static final String WRONG_FORMAT_MESSAGE = "Attenzione: Il formato del file non è corretto, controllare le magic words. In particolare verificare che le prime due righe del file siano: ";
 	private static final String PARAMETER_EMPTY_02 = "Almeno un parametro delle risposte è vuoto; Riempi tutti i campi";
 	private static final String PARAMETER_EMPTY_01 = "Hai inserito alcuni parametri vuoti; Riempi tutti i campi";
 	private static final String CHANGED_FILE_MESSAGE = "è stato cambiato il file con successo ora il file è ";
 	private static final String FILE_NOT_FOUND_MESSAGE = "Il file non esiste: ";
 	private static final String QUIZ_NOT_FOUND_MESSAGE = "Non sono state trovati quiz con questa stringa di ricerca: ";
 	private /*@ spec_public @*/ /*@ non_null @*/ McModel model_mc;
-	private /*@ spec_public @*/ /*@ non_null @*/ TfModel model_tf;
+	private /*@ spec_public @*/ /*@ non_null @*/ Model model_tf;
 	private /*@ spec_public @*/ /*@ non_null @*/ IView view;
 
 	private static final String GENERAL_ERROR_MESSAGE = "Problemi nella lettura/scrittura del file\n";
 	private IAnswers lastMc, lastTf;
 	
-	public Controller(/*@ non_null @*/ McModel  model_mc, /*@ non_null @*/ TfModel model_tf, /*@ non_null @*/ IView view) throws Exception {
+	public Controller(/*@ non_null @*/ McModel  model_mc, /*@ non_null @*/ Model model_tf, /*@ non_null @*/ IView view) throws Exception {
 		if (model_mc == null || model_tf == null || view == null) {
 			throw new IllegalArgumentException("Non hai inizializzato o i modelli o la view");
 		}
@@ -101,33 +103,43 @@ public class Controller implements IController{
 			if (!correct) {
 				return false;
 			}
-		} catch (IOException e) {
+		}catch (FileNotFoundException e) {
+			view.displayInfoErrorMessages(FILE_NOT_FOUND_MESSAGE);
+			return false;
+		}catch (IOException e) {
 			view.displayInfoErrorMessages(GENERAL_ERROR_MESSAGE);
 			return false;
 		}
+		//some assert
+		assert answers != null && answers.length == 4;
 		
-		//insert
+		//new answer
 		IAnswers a = new AnswerMC(category, question, answers[0], answers[1], 
 				answers[2], answers[3], correctAns, caption);
+		//check if just inserted
 		if (a.equals(lastMc)) {
 			view.displayInfoErrorMessages(JUST_INSERTED_MESSAGE);
+			return false;
 		}
-		boolean inserted = true;
 		try {
+			//insert in file
+			boolean inserted = true;	
 			inserted = model_mc.insertAnswer(a);
 			lastMc = a;
-			view.displayInfoErrorMessages("Hai inserito il quiz correttamente!");
+			view.displayInfoErrorMessages(INSERTED_QUIZ);
+			return inserted;
+		} catch (FileNotFoundException e) {
+			view.displayInfoErrorMessages(FILE_NOT_FOUND_MESSAGE);
+			return false;
 		} catch (IOException e) {
 			view.displayInfoErrorMessages(GENERAL_ERROR_MESSAGE);
 			return false;
 		}
-		
-		return inserted;
 	}
 
 	private boolean check_correct_format(IModel model) throws FileNotFoundException, IOException {
 		if (!model.hasKeyWords()) {
-			view.displayInfoErrorMessages(WRONG_FORMAT_MESSAGE);
+			view.displayInfoErrorMessages(WRONG_FORMAT_MESSAGE + System.lineSeparator() + model.getFirstLine() + System.lineSeparator() + model.getSecondLine());
 			return false;
 		}else {
 			assert model.hasKeyWords();
@@ -138,7 +150,7 @@ public class Controller implements IController{
 					view.displayInfoErrorMessages(REMOVED_LINES_MESSAGE);
 					return true;
 				}else {
-					view.displayInfoErrorMessages("Impossibile rimuovere il contenuto sbagliato; Riprovare");
+					view.displayInfoErrorMessages(CANNOT_REMOVE_LINES);
 					return false;
 				}
 			}else {
@@ -168,24 +180,26 @@ public class Controller implements IController{
 			return false;
 		}
 		IAnswers a = new AnswerTF(category, question, correctAnserwer, caption);
+		//check if just inserted
 		if (a.equals(lastTf)) {
 			view.displayInfoErrorMessages(JUST_INSERTED_MESSAGE);
+			return false;
 		}
-		boolean inserted;
 		try {
-			inserted = model_tf.insertAnswer(a);
+			boolean inserted = model_tf.insertAnswer(a);
 			lastTf = a;
+			view.displayInfoErrorMessages(INSERTED_QUIZ);
+			return inserted;
+		} catch (FileNotFoundException e) {
+			view.displayInfoErrorMessages(FILE_NOT_FOUND_MESSAGE);
+			return false;
 		} catch (IOException e) {
 			view.displayInfoErrorMessages(GENERAL_ERROR_MESSAGE);
 			return false;
 		}
-		return inserted;
 	}
 
-	public static String getJustInsertedMessage() {
-		return JUST_INSERTED_MESSAGE;
-	}
-
+	
 	@Override
 	public boolean onSearchButtonPressed(String category) {
 		
@@ -233,7 +247,7 @@ public class Controller implements IController{
 		    }
 		    return true;
 		}catch (FileNotFoundException e) {
-			view.displayInfoErrorMessages(GENERAL_ERROR_MESSAGE);
+			view.displayInfoErrorMessages(FILE_NOT_FOUND_MESSAGE);
 			return false;
 		}catch (IOException e) {
 			view.displayInfoErrorMessages(GENERAL_ERROR_MESSAGE);
@@ -242,6 +256,9 @@ public class Controller implements IController{
 		
 	}
 
+	public static String getJustInsertedMessage() {
+		return JUST_INSERTED_MESSAGE;
+	}
 	
 	public static String getNoFoundMessage() {
 		return NO_FOUND_MESSAGE;

@@ -21,7 +21,7 @@ public class AnswerTF implements ITFAnswers {
 			throw new IllegalArgumentException("Hai inserito almeno una stringa vuota");
 		}
 		this.category = category;
-		this.caption = question;
+		this.question = question;
 		this.caption = caption;
 		this.correctAnswer = correctAnswer;
 	}

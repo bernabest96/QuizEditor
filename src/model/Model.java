@@ -1,6 +1,7 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,11 +19,11 @@ public abstract class Model implements IModel {
 		if (filename == null) {
 			throw new IllegalArgumentException("Valore nullo");
 		}
-		this.filename = filename;
 		File file = new File(filename);
 		if (!file.exists()) {
 			throw new FileNotFoundException();
 		}
+		this.filename = filename;
 		this.MAGIC_KEY = key;
 		this.FIELDS = keys;
 	}
@@ -41,11 +42,11 @@ public abstract class Model implements IModel {
 		if (filename == null) {
 			throw new IllegalArgumentException("Valore nullo");
 		}
-		this.filename = filename;
 		File file = new File(filename);
 		if (!file.exists()) {
 			throw new FileNotFoundException();
 		}
+		this.filename = filename;
 	}
 
 	
@@ -74,9 +75,9 @@ public abstract class Model implements IModel {
 	}
 
 	protected String[] splitLine(String string) {
-		if (string == null) {
-			return null;
-		}
+		//assert input
+		assert string != null;
+		
 		string = string.substring(1, string.length() - 1);
 		//System.out.println(string);
 		String[] splitted = string.split("\",\"");
@@ -88,25 +89,6 @@ public abstract class Model implements IModel {
 	}
 	
 	@Override
-	public /*@ pure @*/ boolean hasWrongLines() throws FileNotFoundException, IOException {
-		BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
-		//Skip two lines
-		br.readLine();
-		br.readLine();
-		//cycle over file
-		String line;
-		while ((line = br.readLine()) != null) {
-	       String[] words = splitLine(line);
-	       if (words.length != FIELDS.length || (!words[6].equals("A") && !words[6].equals("B") 
-	    		   && !words[6].equals("D") && !words[6].equals("D"))){
-	    	   return true;
-	       }
-	    }
-		return false;
-	}
-	
-	 
-	@Override
 	public /*@ pure @*/ boolean hasKeyWords() throws FileNotFoundException, IOException {
 		BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
 		String first_line = br.readLine();
@@ -117,5 +99,46 @@ public abstract class Model implements IModel {
 		boolean sres = splitted != null && Arrays.equals(splitted, FIELDS);
 		return fres && sres;
 	}
+
+	@Override
+	public String getFirstLine() {
+		return "\"" + MAGIC_KEY + "\"";
+	}
+
+	@Override
+	public String getSecondLine() {
+		String second_line = "\"";
+		for (int i=0; i < FIELDS.length; i++) {
+			if (i < FIELDS.length - 1)
+			{
+				second_line += FIELDS[i] + "\",\"";
+			}else {
+				assert i == FIELDS.length - 1;
+				second_line += FIELDS[i] + "\"";
+			}
+		}
+		return second_line;
+	}
+	
+//	@Override
+//	public void reset(boolean resetAll) throws IOException {
+//		String fieldString = "";
+//		for (int i=0; i < FIELDS.length; i++) {
+//			fieldString += "\"" + FIELDS[i] + "\",";
+//			if (i == FIELDS.length - 1) {
+//				fieldString += ",";
+//			}
+//		}
+//		if (resetAll) {
+//			//sovrescrivi tutto il file
+//			FileWriter fw = new FileWriter(filename);
+//			fw.write(MAGIC_KEY + System.lineSeparator());
+//			fw.write(fieldString + System.lineSeparator());
+//		    fw.close();
+//		}else {
+//			System.out.println("Suca!");
+//		}
+//		
+//	}
 
 }

@@ -185,11 +185,11 @@ public class View extends JFrame implements IView, ActionListener{
 		JLabel categoryLabel01 = new JLabel("Category:");
 		questionMCField = new JTextArea("Enter MC Question Here");
 		JLabel questionLabel01 = new JLabel("Question:");
-		AField = new JTextField();
-		BField = new JTextField();
-		CField = new JTextField();
-		DField = new JTextField();
-		captionMCField = new JTextArea("captionMC");
+		AField = new JTextField("Enter Answer A");
+		BField = new JTextField("Enter Answer B");
+		CField = new JTextField("Enter Answer C");
+		DField = new JTextField("Enter Answer D");
+		captionMCField = new JTextArea("Enter caption for MC");
 		JLabel captionLabel01 = new JLabel("Caption:");
 		ARadioButton = new JRadioButton("A)"); ARadioButton.setSelected(true);
 		BRadioButton = new JRadioButton("B)"); BRadioButton.setSelected(false);

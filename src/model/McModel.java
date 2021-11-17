@@ -26,15 +26,14 @@ public class McModel extends Model{
 	
 	@Override
 	public IAnswers[] readAnswers(String category_search) throws FileNotFoundException, IOException {
-		File file = new File(filename);
+		//argument error check
 		if (category_search == null) {
 			throw new IllegalArgumentException("la stringa di ricerca è null");
 		}
-//		int num_answers = (int) (file.length() - 1);
-//		//se è vuoto
-//		if (num_answers <= 0) {
-//			return null; 
-//		}
+		if (!this.isWellFormed()) {
+			throw new IllegalArgumentException("Hai cercato di leggere quiz in un file di righe nel formato scorretto");
+		}
+		
 		ArrayList<IAnswers> answer_list = new ArrayList<IAnswers>();
 		String line;
 		BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
@@ -55,22 +54,27 @@ public class McModel extends Model{
 	    	   String D = words[5];
 	    	   String correctAnswer = words[6];
 	    	   String caption = words[7];
-	    	   
+	    	   //create answer and add to list
 	    	   AnswerMC a = new AnswerMC(category_in_file, question, A, B, C, D, correctAnswer, caption);
 	    	   answer_list.add(a);
 	       }
 	    }
 
+	    br.close();
 		if (answer_list.isEmpty()) {
 			//vuoto o non trova la stringa di ricerca
 			return null;
 		}else {
+			//assert
+			assert !answer_list.isEmpty();
+			//conversione da lista a array
 			Object[] obj_list = answer_list.toArray();
+			//assert
+			assert obj_list != null && obj_list.length > 0;
 			IAnswers[] answ_list = new IAnswers[obj_list.length];
 			for (int i=0; i < obj_list.length; i++) {
 				answ_list[i] = (IAnswers) obj_list[i];
 			}
-			assert answ_list != null;
 			return answ_list;
 		}
 		
@@ -78,6 +82,12 @@ public class McModel extends Model{
 
 	@Override
 	public boolean removeWrongLines() throws FileNotFoundException, IOException {
+		
+		//check input correct
+		if (!this.hasKeyWords()) {
+			throw new IllegalArgumentException("Il file deve essere ben formato! this.hasKeyWords() == false");
+		}
+		//Rimuovi
 		File inputFile = new File(filename);
 		File tempFile = new File("myTempFile.txt");
 
@@ -94,14 +104,16 @@ public class McModel extends Model{
 		    String[] splittedLine = splitLine(currentLine);
 		    boolean ok_line = splittedLine.length == MC_KEYS.length && (splittedLine[6].equals("A") || splittedLine[6].equals("B") ||
 		    		splittedLine[6].equals("C") || splittedLine[6].equals("D"));
-		    if(!ok_line) {
+		    
+		    if(!ok_line) {	//se non è ok, skip la riga
 		    	removed = true;
-		    	continue;
+		    }else { //altrimenti scrivi nel nuovo file
+		    	assert ok_line;
+//		    	System.out.println(currentLine);
+			    writer.write(currentLine + System.lineSeparator());
+			    writer.flush();
 		    }
-		    assert ok_line;
-		    System.out.println(currentLine);
-		    writer.write(currentLine + System.lineSeparator());
-		    writer.flush();
+		    
 		}
 		writer.close(); 
 		reader.close();
@@ -109,6 +121,27 @@ public class McModel extends Model{
 		boolean deleted = inputFile.delete();
 		boolean renamed = tempFile.renameTo(inputFile);
 		return removed && deleted && renamed;
+	}
+
+
+	@Override
+	public boolean hasWrongLines() throws FileNotFoundException, IOException {
+		BufferedReader br = new BufferedReader(new FileReader(new File(filename)));
+		//Skip two lines
+		br.readLine();
+		br.readLine();
+		//cycle over file
+		String line;
+		while ((line = br.readLine()) != null) {
+	       String[] words = splitLine(line);
+	       if (words.length != FIELDS.length || (!words[6].equals("A") && !words[6].equals("B") 
+	    		   && !words[6].equals("C") && !words[6].equals("D"))){
+	    	   br.close();
+	    	   return true;
+	       }
+	    }
+		br.close();
+		return false;
 	}
 		
 }
