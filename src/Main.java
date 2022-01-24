@@ -1,4 +1,5 @@
 import model.McModel;
+import model.Model;
 import model.TfModel;
 import view.IView;
 import view.View;
@@ -21,12 +22,12 @@ public class Main {
 			model_tf = new TfModel(FILEPATH_TF_DEFAULT);
 			v = new View();
 			Controller c = new Controller(model_mc, model_tf, v);
+			v.registerListener(c);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 }

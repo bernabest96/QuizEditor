@@ -8,7 +8,7 @@ package view;
  *
  * @param <T> Tipo generico di oggetto (estende Object)
  */
-public interface ICustomQueue<T> {
+public interface ICustomQueue {
 
 	/**
 	 * Il metodo controlla che la coda abbia raggiunto la dimensione massima
@@ -21,7 +21,7 @@ public interface ICustomQueue<T> {
 	 * @param e Oggetto di tipo T inserito in coda
 	 * @return true se la coda ha raggiunto la capacità massima (elimina l'ultimo elemento), false altrimenti
 	 */
-	boolean enqueue(T e);
+	boolean enqueue(String e);
 
 	/**
 	 * Ritorna la dimensione corrente della coda
@@ -50,6 +50,6 @@ public interface ICustomQueue<T> {
 	 * Ritorna come array di tipo T gli elementi correnti nella coda
 	 * @return array di tipo T della coda
 	 */
-	T[] getArray();
+	String[] getArray();
 
 }
