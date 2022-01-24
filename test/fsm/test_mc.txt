@@ -1,2 +1,2 @@
 "MC"
-"category","question","A","B","C","D","correctAnswer","caption"
+"category","question","A","B","C","D","answer","caption"

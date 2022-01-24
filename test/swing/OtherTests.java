@@ -9,54 +9,33 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.regex.Pattern;
 
 public class OtherTests {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-//		String s = "aaa\nbbbb\ncccc\n";
-//		String[] ss = s.split("\n");
-//		System.out.println(s.split("\n")[s.split("\n").length - 1]);
-//		for (String sr : ss) {
-//			System.out.println(sr.toString());
-//		}
-//		//ultima riga esce null
-		String filename = "./test/swing/file.txt";
-		File file = new File(filename);
 //		try {
-//			BufferedReader br = new BufferedReader(new FileReader(file));
-//			br.mark(1000);
-//			String l1 = br.readLine();
-//			String l2 = br.readLine();
-//			System.out.println(l1);
-//			System.out.println(l2);
-//			String[] lsplit = l2.split("\",\"");
-//			String[] expected = new String[] {"a1", "a2", "a3"};
-//			for (int i = 0; i < lsplit.length; i++) {
-//				lsplit[i] = lsplit[i].replace("\"", "");
-//				System.out.println("char : " + lsplit[i]);
-//				assert lsplit[i].equals(expected[i]) : "Non sono uguali";
-//			}
-//			br.close();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
+//			BufferedWriter bw = new BufferedWriter(new FileWriter(new File("./test/swing/file.txt")));
+//			bw.write("Scrivi cose" + System.lineSeparator());
+//			bw.write("\\r\\n" + System.lineSeparator());
+//			String s = "line separator \r\n";
+//			s.replace("\r\n", "\\r\\n");
+//			bw.write(s);
+//			bw.close();
 //		} catch (IOException e) {
+//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 		
-		FileWriter fw;
-		try {
-			fw = new FileWriter(filename,true);
-			fw.write("add a line\n");//appends the string to the file
-		    fw.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} //the true will append the new data
-	    
-		
-		
-		
+		String ab = "aaaaaab";
+		assert Pattern.matches("a+b", ab);
+		String q = "\"pipp\\\"odsadklasj\",\"pattern\",\"pattern2\"";
+		assert Pattern.matches("\"[^\" | (\\\")]+(\",\"[^\"]+)+\"", q) : "Attenzione";
+
+		String DASHQUOTE = "\\\"";
+		String QUOTE = "\"";
+		String line = "\"category\",\"question\",\"rispA\",\"rispB\",\"rispC\",\"rispD\",\"A\",\"caption\"";
+		assert Pattern.matches(QUOTE + "[^" + QUOTE + "]" + "(\",\"" + "[^" + QUOTE + "])+" + QUOTE, line) : "Pattern sbagliato";
 	}
 
 }

@@ -9,22 +9,22 @@ import view.CustomQueue;
 import view.ICustomQueue;
 
 public class CustomQueueCapacityTest {
-	private ICustomQueue<String> q;
+	private ICustomQueue q;
 	private int max_capacity = 10;
 	
 	public CustomQueueCapacityTest() {
-		q = new CustomQueue<String>(max_capacity);
+		q = new CustomQueue(max_capacity);
 	}
 	
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void CapacityTest01() {
-		new CustomQueue<String>(-1);	
+		new CustomQueue(-1);	
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void CapacityTest02() {
-		new CustomQueue<String>(0);
+		new CustomQueue(0);
 	}
 	
 	@Test()

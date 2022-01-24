@@ -1,0 +1,8 @@
+"MC"
+"category","question","A","B","C","D","answer","caption"
+"category_a","question01","A","B","C","D","D","this is cap"
+"category_b","question02","A","B","C","D","D","this is cap"
+"category_c","question03","A","B","C","D","D","this is cap"
+"category_a","question04","A","B","C","D","D","this is cap"
+"category_a","question05","A","B","C","D","D","this is cap"
+"category_c","question06","A","B","C","D","D","this is cap"

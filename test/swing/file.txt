@@ -1,2 +1,3 @@
-Linea numero uno
-add a line
+Scrivi cose
+\r\n
+line separator 

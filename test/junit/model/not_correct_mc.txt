@@ -1,0 +1,2 @@
+"Cose strane"
+"category","question","A", "B", "C", "D","answer","caption"

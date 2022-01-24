@@ -26,7 +26,7 @@ import view.ICustomQueue;
 @RunWith(Parameterized.class)
 public class CustomQueueFunctionalityTest {
 	
-	private ICustomQueue<String> q;
+	private ICustomQueue q;
 	
 	private String[] inputStrings;
 	private String[] expectedStrings;
@@ -46,14 +46,14 @@ public class CustomQueueFunctionalityTest {
 	public static Collection<Object[]> data() {
         Object[][] data = new Object[][] { 
         	{ new String[]{}, new String[]{}, 1, "", false},
-        	{ new String[]{"s1"}, new String[]{"s1"}, 1, "s1\n", true},
-        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s3"}, 1, "s3\n", true}, 
-        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s1", "s2", "s3"}, 5, "s1\ns2\ns3\n", false}, 
-        	{ new String[]{"s1", "s2", "s3", "s4", "s5"}, new String[]{"s1", "s2", "s3", "s4", "s5"}, 5 , "s1\ns2\ns3\ns4\ns5\n", true}, 
-        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, new String[]{"s3", "s4", "s5", "s6", "s7"}, 5 , "s3\ns4\ns5\ns6\ns7\n", true},
-        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s1", "s2", "s3"}, 7, "s1\ns2\ns3\n", false},
-        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, 7, "s1\ns2\ns3\ns4\ns5\ns6\ns7\n", true},
-        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"}, new String[]{"s2", "s3", "s4", "s5", "s6", "s7", "s8"}, 7, "s2\ns3\ns4\ns5\ns6\ns7\ns8\n", false}
+        	{ new String[]{"s1"}, new String[]{"s1"}, 1, "s1\r\n", true},
+        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s3"}, 1, "s3\r\n", true}, 
+        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s1", "s2", "s3"}, 5, "s1\r\ns2\r\ns3\r\n", false}, 
+        	{ new String[]{"s1", "s2", "s3", "s4", "s5"}, new String[]{"s1", "s2", "s3", "s4", "s5"}, 5 , "s1\r\ns2\r\ns3\r\ns4\r\ns5\r\n", true}, 
+        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, new String[]{"s3", "s4", "s5", "s6", "s7"}, 5 , "s3\r\ns4\r\ns5\r\ns6\r\ns7\r\n", true},
+        	{ new String[]{"s1", "s2", "s3"}, new String[]{"s1", "s2", "s3"}, 7, "s1\r\ns2\r\ns3\r\n", false},
+        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7"}, 7, "s1\r\ns2\r\ns3\r\ns4\r\ns5\r\ns6\r\ns7\r\n", true},
+        	{ new String[]{"s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"}, new String[]{"s2", "s3", "s4", "s5", "s6", "s7", "s8"}, 7, "s2\r\ns3\r\ns4\r\ns5\r\ns6\r\ns7\r\ns8\r\n", false}
         	};
         return Arrays.asList(data);
     }
@@ -61,7 +61,7 @@ public class CustomQueueFunctionalityTest {
 	@Before
 	public void setup() {
 		//System.out.println("Setup");
-		q = new CustomQueue<String>(max_dim);
+		q = new CustomQueue(max_dim);
 		for (String s : inputStrings) {
 			q.enqueue(s);
 		}
@@ -76,7 +76,7 @@ public class CustomQueueFunctionalityTest {
 	@Test
 	public void isEmptyTest() {
 		//nuovo oggetto vuoto
-		CustomQueue<String> q2 = new CustomQueue<String>(max_dim);
+		CustomQueue q2 = new CustomQueue(max_dim);
 		assertTrue("q2.size == 0", q2.size() == 0);
 		assertTrue(q2.isEmpty());
 	}

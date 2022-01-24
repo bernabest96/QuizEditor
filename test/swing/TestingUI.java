@@ -23,7 +23,7 @@ public class TestingUI extends JFrame implements ActionListener{
 	private static final int WIDTH_W = 700;
 	private static final int HEIGHT_W = 1000;
 	private static final int MAX_LINE_IN_MEMORY = 50;
-	private ICustomQueue<String> queue;
+	private ICustomQueue queue;
 	
 	//menu
 	JMenuBar bar;
@@ -77,7 +77,7 @@ public class TestingUI extends JFrame implements ActionListener{
 	/*------------*/
 	
 	public TestingUI() {
-		queue = new CustomQueue<String>(MAX_LINE_IN_MEMORY);
+		queue = new CustomQueue(MAX_LINE_IN_MEMORY);
 		setTitle("Testing Swing");
 		
 		/*----------------------------------------------*/
